@@ -1,0 +1,58 @@
+---
+title: "Granger test"
+author: "" 
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE,comment=NULL,message=FALSE, include=TRUE, warning=FALSE)
+```
+
+### Load and merge data
+```{r}
+library(dplyr)
+library(readr)
+library(lubridate)
+#load data
+  T5ybe <- read_csv("Clean Data/5ybreakevenclean.csv")
+  gold <- read_csv("Clean Data/goldclean.csv")
+#merge data
+  merged <- inner_join(gold,T5ybe,by=c('Date'='T5YIE'))
+  merged$Date=ymd(merged$Date) #convert to date
+```
+
+### Calculate returns
+```{r}
+library(zoo)
+merged$gold_dr <- (merged$Price-lag(merged$Price)) / lag(merged$Price)
+merged$T5ybe_dr <- (merged$ifl-lag(merged$ifl)) / lag(merged$ifl)
+```
+
+### Checking the order of variable input
+The following output puts **inflation** before **gold**
+```{r}
+library (lmtest)
+grangertest(T5ybe_dr ~ gold_dr, order = 1, data = merged) 
+```
+
+The following output puts **gold** before **inflation**
+```{r}
+grangertest(gold_dr ~ T5ybe_dr, order = 1, data = merged) 
+```
+
+The following code performs the granger test manually
+```{r}
+results<-lm(gold_dr ~ lag(gold_dr) + lag(T5ybe_dr),data=merged)
+summary(results)
+```
+
+The results imply that you get the same resutls when you put the variable you want to test **FIRST**
+
+### Correct granger tests
+```{r}
+  grangertest(gold_dr ~ T5ybe_dr, order = 1, data = merged) 
+  grangertest(gold_dr ~ T5ybe_dr, order = 2, data = merged) 
+  grangertest(gold_dr ~ T5ybe_dr, order = 3, data = merged) 
+  grangertest(gold_dr ~ T5ybe_dr, order = 4, data = merged) 
+  grangertest(gold_dr ~ T5ybe_dr, order = 5, data = merged) 
+```
