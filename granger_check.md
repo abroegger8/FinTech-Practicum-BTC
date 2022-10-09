@@ -3,7 +3,7 @@ Granger test
 
 This file checks what order the variables need to be specified in for
 the `grangertest` command. It turns out the variable you want to test
-for needs to come first.
+for needs to come **first.**
 
 ### Load and merge data
 
