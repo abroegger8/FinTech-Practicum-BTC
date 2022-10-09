@@ -8,6 +8,8 @@ output: github_document
 knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE,comment=NULL,message=FALSE, include=TRUE, warning=FALSE)
 ```
 
+This file checks what order the variables need to be specified in for the `grangertest` command. It turns out the variable you want to test for needs to come **first.**
+
 ### Load and merge data
 ```{r}
 library(dplyr)
@@ -46,7 +48,7 @@ results<-lm(gold_dr ~ lag(gold_dr) + lag(T5ybe_dr),data=merged)
 summary(results)
 ```
 
-The results imply that you get the same resutls when you put the variable you want to test **FIRST**
+The results imply that you get the same results when you put the variable you want to test **FIRST**
 
 ### Correct granger tests
 ```{r}

@@ -1,6 +1,10 @@
 Granger test
 ================
 
+This file checks what order the variables need to be specified in for
+the `grangertest` command. It turns out the variable you want to test
+for needs to come first.
+
 ### Load and merge data
 
 ``` r
@@ -81,7 +85,7 @@ Multiple R-squared:  0.009185,  Adjusted R-squared:  0.00856
 F-statistic: 14.68 on 2 and 3168 DF,  p-value: 4.486e-07
 ```
 
-The results imply that you get the same resutls when you put the
+The results imply that you get the same results when you put the
 variable you want to test **FIRST**
 
 ### Correct granger tests
