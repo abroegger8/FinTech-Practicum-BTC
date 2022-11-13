@@ -1,0 +1,59 @@
+---
+title: "BTC/ETH check"
+author: "" 
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE,comment=NULL,message=FALSE, include=TRUE, warning=FALSE)
+```
+
+This file attemps to reconcile results from BTC and ETH groups for granger causality
+
+### Load and merge data
+```{r}
+library(dplyr)
+library(readr)
+library(lubridate)
+library(zoo)
+library (lmtest)
+#load data
+  T5ybe <- read_csv("Clean Data/5ybreakevenclean.csv")
+  gold <- read_csv("Clean Data/goldclean.csv")
+  gold_ETH <- read_csv("ETH_data/Gold.csv")
+#merge data
+  merged <- inner_join(gold,T5ybe,by=c('Date'='T5YIE'))
+  merged$Date=ymd(merged$Date) #convert to date
+```
+
+### Setup python
+```{r}
+library(reticulate)
+py_install("pandas")
+py_install("numpy")
+py_install("statsmodels")
+
+```
+
+```{python}
+import pandas as pd
+import numpy as np 
+#from sklearn.linear_model import LinearRegression
+#import statsmodels.api as sm
+from statsmodels.tsa.stattools import grangercausalitytests
+
+#Gold 
+df_gold = pd.read_csv('ETH_data/Gold.csv')
+#print(df_gold)
+# GOLD
+#inflation=['T5YIE', 'T10YIE', 'T5YIFR']
+inflation=['T5YIE']
+for element in inflation: 
+  result=grangercausalitytests(df_gold[['Response', element]], maxlag=[5])
+  print(inflation, 'response', result)
+```
+### Check R results
+```{r}
+grangertest(Response ~ T5YIE, order = 5, data = gold_ETH) 
+```
+

@@ -34,12 +34,13 @@ merged$T5ybe_dr <- (merged$ifl-lag(merged$ifl)) / lag(merged$ifl)
 The following output puts **inflation** before **gold**
 ```{r}
 library (lmtest)
-grangertest(T5ybe_dr ~ gold_dr, order = 1, data = merged) 
+grangertest(T5ybe_dr ~ gold_dr, order = 1, data = merged)
 ```
 
 The following output puts **gold** before **inflation**
 ```{r}
 grangertest(gold_dr ~ T5ybe_dr, order = 1, data = merged) 
+grangertest(merged$T5ybe_dr,merged$gold_dr, order = 1) 
 ```
 
 The following code performs the granger test manually

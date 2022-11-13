@@ -33,7 +33,7 @@ The following output puts **inflation** before **gold**
 
 ``` r
 > library (lmtest)
-> grangertest(T5ybe_dr ~ gold_dr, order = 1, data = merged) 
+> grangertest(T5ybe_dr ~ gold_dr, order = 1, data = merged)
 Granger causality test
 
 Model 1: T5ybe_dr ~ Lags(T5ybe_dr, 1:1) + Lags(gold_dr, 1:1)
@@ -51,6 +51,16 @@ Granger causality test
 
 Model 1: gold_dr ~ Lags(gold_dr, 1:1) + Lags(T5ybe_dr, 1:1)
 Model 2: gold_dr ~ Lags(gold_dr, 1:1)
+  Res.Df Df      F    Pr(>F)    
+1   3168                        
+2   3169 -1 27.731 1.487e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+> grangertest(merged$T5ybe_dr,merged$gold_dr, order = 1) 
+Granger causality test
+
+Model 1: merged$gold_dr ~ Lags(merged$gold_dr, 1:1) + Lags(merged$T5ybe_dr, 1:1)
+Model 2: merged$gold_dr ~ Lags(merged$gold_dr, 1:1)
   Res.Df Df      F    Pr(>F)    
 1   3168                        
 2   3169 -1 27.731 1.487e-07 ***
