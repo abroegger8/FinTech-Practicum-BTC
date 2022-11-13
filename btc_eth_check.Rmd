@@ -26,8 +26,8 @@ library (lmtest)
   merged$Date=ymd(merged$Date) #convert to date
 ```
 
-### Setup python
-```{r}
+### Run team ETH results in python code
+```{r, eval=FALSE}
 library(reticulate)
 py_install("pandas")
 py_install("numpy")
@@ -38,13 +38,10 @@ py_install("statsmodels")
 ```{python}
 import pandas as pd
 import numpy as np 
-#from sklearn.linear_model import LinearRegression
-#import statsmodels.api as sm
 from statsmodels.tsa.stattools import grangercausalitytests
 
 #Gold 
 df_gold = pd.read_csv('ETH_data/Gold.csv')
-#print(df_gold)
 # GOLD
 #inflation=['T5YIE', 'T10YIE', 'T5YIFR']
 inflation=['T5YIE']
@@ -56,4 +53,6 @@ for element in inflation:
 ```{r}
 grangertest(Response ~ T5YIE, order = 5, data = gold_ETH) 
 ```
+We can see that the Python and R code results are **EXACTLY** the samewhen you look at the `F score`. This suggests that the difference in results comes from the data used and not due to any differences in the functions.
+
 

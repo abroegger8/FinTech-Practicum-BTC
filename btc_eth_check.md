@@ -21,25 +21,23 @@ granger causality
 >   merged$Date=ymd(merged$Date) #convert to date
 ```
 
-### Setup python
+### Run team ETH results in python code
 
 ``` r
 > library(reticulate)
 > py_install("pandas")
 > py_install("numpy")
 > py_install("statsmodels")
+> 
 ```
 
 ``` python
 > import pandas as pd
 + import numpy as np 
-+ #from sklearn.linear_model import LinearRegression
-+ #import statsmodels.api as sm
 + from statsmodels.tsa.stattools import grangercausalitytests
 + 
 + #Gold 
 + df_gold = pd.read_csv('ETH_data/Gold.csv')
-+ #print(df_gold)
 + # GOLD
 + #inflation=['T5YIE', 'T10YIE', 'T5YIFR']
 + inflation=['T5YIE']
@@ -53,7 +51,7 @@ ssr based F test:         F=17.5949 , p=0.0000  , df_denom=7184, df_num=5
 ssr based chi2 test:   chi2=88.1093 , p=0.0000  , df=5
 likelihood ratio test: chi2=87.5741 , p=0.0000  , df=5
 parameter F test:         F=17.5949 , p=0.0000  , df_denom=7184, df_num=5
-['T5YIE'] response {5: ({'ssr_ftest': (17.594913631820692, 2.295938548368447e-17, 7184.0, 5), 'ssr_chi2test': (88.10927309364551, 1.6763593914671895e-17, 5), 'lrtest': (87.57414857427648, 2.1711443542335234e-17, 5), 'params_ftest': (17.59491363182082, 2.295938548367566e-17, 7184.0, 5.0)}, [<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x0000024D446B5430>, <statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x0000024D446B5A60>, array([[0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0.],
+['T5YIE'] response {5: ({'ssr_ftest': (17.594913631820692, 2.295938548368447e-17, 7184.0, 5), 'ssr_chi2test': (88.10927309364551, 1.6763593914671895e-17, 5), 'lrtest': (87.57414857427648, 2.1711443542335234e-17, 5), 'params_ftest': (17.59491363182082, 2.295938548367566e-17, 7184.0, 5.0)}, [<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x000001AD6FEC5670>, <statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x000001AD6FEC5B80>, array([[0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0.],
@@ -74,3 +72,8 @@ Model 2: Response ~ Lags(Response, 1:5)
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
+
+We can see that the Python and R code results are **EXACTLY** the
+samewhen you look at the `F score`. This suggests that the difference in
+results comes from the data used and not due to any differences in the
+functions.
